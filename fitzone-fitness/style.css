@@ -7,7 +7,7 @@
    1. Design Tokens & CSS Custom Properties
    -------------------------------------------------------------------------- */
 :root {
-  /* Color Palette: Dark Charcoal & Neon Lime-Green */
+  /* Color Palette: Dark Charcoal & Neon Lime-Green (Default Dark Theme) */
   --bg-body: #0a0c0e;
   --bg-surface-1: #111417;
   --bg-surface-2: #171b1f;
@@ -40,6 +40,16 @@
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-medium: rgba(255, 255, 255, 0.14);
   --border-accent: rgba(204, 255, 0, 0.35);
+
+  /* Element Specific Theme Overrides */
+  --header-bg: rgba(10, 12, 14, 0.85);
+  --header-bg-scrolled: rgba(10, 12, 14, 0.96);
+  --nav-drawer-bg: rgba(10, 12, 14, 0.98);
+  --card-badge-bg: rgba(10, 12, 14, 0.85);
+  --modal-backdrop-bg: rgba(0, 0, 0, 0.8);
+  --bg-glass: rgba(255, 255, 255, 0.04);
+  --bg-mesh-1: rgba(204, 255, 0, 0.04);
+  --bg-mesh-2: rgba(204, 255, 0, 0.03);
 
   /* Typography */
   --font-heading: 'Outfit', sans-serif;
@@ -78,6 +88,52 @@
   --container-max: 1240px;
 }
 
+/* Light Theme Mode Token Overrides */
+[data-theme="light"] {
+  --bg-body: #f8fafc;
+  --bg-surface-1: #ffffff;
+  --bg-surface-2: #f1f5f9;
+  --bg-surface-3: #e2e8f0;
+  --bg-surface-card: #ffffff;
+  --bg-surface-card-hover: #f1f5f9;
+
+  /* Athletic Forest & Emerald Green Accents for Clean Light Contrast */
+  --accent-primary: #16a34a;
+  --accent-hover: #15803d;
+  --accent-dark: #14532d;
+  --accent-glow: rgba(22, 163, 74, 0.25);
+  --accent-glow-subtle: rgba(22, 163, 74, 0.1);
+  --accent-gradient: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+
+  /* Neutral & Text Colors */
+  --text-white: #0f172a;       /* Prominent titles & headings */
+  --text-primary: #1e293b;     /* Primary body text */
+  --text-secondary: #475569;   /* Supporting subtitles & descriptions */
+  --text-muted: #64748b;       /* Minor labels & placeholders */
+  --text-dark: #ffffff;        /* High-contrast text on primary buttons */
+
+  /* Borders & Dividers */
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.14);
+  --border-accent: rgba(22, 163, 74, 0.35);
+
+  /* Element Specific Light Theme Overrides */
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-bg-scrolled: rgba(255, 255, 255, 0.98);
+  --nav-drawer-bg: rgba(255, 255, 255, 0.98);
+  --card-badge-bg: rgba(255, 255, 255, 0.92);
+  --modal-backdrop-bg: rgba(15, 23, 42, 0.65);
+  --bg-glass: rgba(0, 0, 0, 0.04);
+  --bg-mesh-1: rgba(22, 163, 74, 0.05);
+  --bg-mesh-2: rgba(22, 163, 74, 0.03);
+
+  /* Shadows in Light Mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+  --shadow-neon: 0 0 20px rgba(22, 163, 74, 0.2), 0 0 40px rgba(22, 163, 74, 0.08);
+}
+
 /* --------------------------------------------------------------------------
    2. Reset & Base Styles
    -------------------------------------------------------------------------- */
@@ -96,6 +152,12 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Accessible Section Scroll Margin for Sticky Header Offset */
+section[id],
+#main-content {
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
 body {
   font-family: var(--font-body);
   background-color: var(--bg-body);
@@ -104,6 +166,7 @@ body {
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* Subtle background geometric gradient mesh */
@@ -115,8 +178,8 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 15% 20%, rgba(204, 255, 0, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 85% 70%, rgba(204, 255, 0, 0.03) 0%, transparent 45%);
+    radial-gradient(circle at 15% 20%, var(--bg-mesh-1) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, var(--bg-mesh-2) 0%, transparent 45%);
   pointer-events: none;
   z-index: -1;
 }
@@ -323,7 +386,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card-badge {
   display: inline-block;
-  background: rgba(10, 12, 14, 0.85);
+  background: var(--card-badge-bg);
   backdrop-filter: blur(8px);
   border: 1px solid var(--border-accent);
   color: var(--accent-primary);
@@ -344,7 +407,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
   width: 100%;
   height: var(--header-height);
-  background-color: rgba(10, 12, 14, 0.85);
+  background-color: var(--header-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
@@ -353,9 +416,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header.scrolled {
-  background-color: rgba(10, 12, 14, 0.96);
-  border-bottom-color: rgba(204, 255, 0, 0.18);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  background-color: var(--header-bg-scrolled);
+  border-bottom-color: var(--border-accent);
+  box-shadow: var(--shadow-md);
 }
 
 .header-container {
@@ -367,6 +430,43 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: auto;
   margin-right: auto;
   padding: 0 clamp(1rem, 4vw, 2rem);
+  gap: 1rem;
+}
+
+/* Header Controls: Theme Toggle & Hamburger */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--accent-glow-subtle);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px var(--accent-glow-subtle);
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0);
 }
 
 .nav-brand {
@@ -651,6 +751,10 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   background: linear-gradient(to top, rgba(10, 12, 14, 0.85) 0%, rgba(10, 12, 14, 0.15) 50%, transparent 100%);
   pointer-events: none;
+}
+
+[data-theme="light"] .hero-img-gradient-overlay {
+  background: linear-gradient(to top, rgba(248, 250, 252, 0.85) 0%, rgba(248, 250, 252, 0.15) 50%, transparent 100%);
 }
 
 /* Floating Promotional Label */
@@ -1354,7 +1458,7 @@ h1, h2, h3, h4, h5, h6 {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: var(--modal-backdrop-bg);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -1735,7 +1839,7 @@ h1, h2, h3, h4, h5, h6 {
     left: 0;
     width: 100%;
     height: calc(100vh - var(--header-height));
-    background-color: rgba(10, 12, 14, 0.98);
+    background-color: var(--nav-drawer-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
@@ -1854,7 +1958,72 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --------------------------------------------------------------------------
-   14. Accessibility: Reduced Motion
+   14. Scroll Reveal Animations (IntersectionObserver)
+   -------------------------------------------------------------------------- */
+.js-reveal .reveal-item {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.js-reveal .reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.js-reveal .reveal-item[data-reveal-delay="1"] {
+  transition-delay: 0.1s;
+}
+
+.js-reveal .reveal-item[data-reveal-delay="2"] {
+  transition-delay: 0.2s;
+}
+
+.js-reveal .reveal-item[data-reveal-delay="3"] {
+  transition-delay: 0.3s;
+}
+
+/* Screen Reader Only Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Light Theme Component Micro-Polishes */
+[data-theme="light"] .floating-promo-card,
+[data-theme="light"] .floating-stat-card,
+[data-theme="light"] .about-floating-badge {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(22, 163, 74, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .social-link {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-white);
+  border-color: var(--border-medium);
+}
+
+[data-theme="light"] .social-link:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border-color: var(--accent-primary);
+}
+
+[data-theme="light"] .footer-demo-label {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* --------------------------------------------------------------------------
+   15. Accessibility: Reduced Motion
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1870,5 +2039,11 @@ h1, h2, h3, h4, h5, h6 {
   .floating-promo-card,
   .floating-stat-card {
     animation: none !important;
+  }
+
+  .js-reveal .reveal-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
